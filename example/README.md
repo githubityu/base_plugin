@@ -1,6 +1,6 @@
-# base_plugin_example
+# hello_example
 
-Demonstrates how to use the base_plugin plugin.
+Demonstrates how to use the hello plugin.
 
 ## Getting Started
 

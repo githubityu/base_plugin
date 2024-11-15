@@ -4,18 +4,38 @@ version '1.0-SNAPSHOT'
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/public/"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/google"
+        }
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/public/"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/google"
+        }
+
+
         google()
         mavenCentral()
     }
@@ -59,10 +79,34 @@ android {
             useJUnitPlatform()
 
             testLogging {
-               events "passed", "skipped", "failed", "standardOut", "standardError"
-               outputs.upToDateWhen {false}
-               showStandardStreams = true
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
             }
         }
     }
+}
+rootProject.allprojects {
+    repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/public/"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/google"
+        }
+
+        google()
+        mavenCentral()
+        flatDir {
+            dirs project(':base_plugin').file('libs')
+        }
+    }
+}
+
+
+dependencies {
+    implementation(name: "greeting", ext: "aar")
 }

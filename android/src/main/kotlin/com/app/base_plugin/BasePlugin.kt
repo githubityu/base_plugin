@@ -1,13 +1,23 @@
 package com.app.base_plugin
 
 import androidx.annotation.NonNull
-import com.app.base_plugin.FlutterMessageApi
-import com.app.base_plugin.HostMessageApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import greeting.Greeting
+import greeting.WalletResponse
+import org.json.JSONObject
 
+fun WalletResponse.toJSONObject(): JSONObject {
+    val jsonObject = JSONObject()
+    jsonObject.put("address", address)
+    jsonObject.put("mnemonic", mnemonic)
+    jsonObject.put("privateKey", privateKey)
+    jsonObject.put("publicKey", publicKey)
+    jsonObject.put("keystore", keystore)
+    return jsonObject
+}
 
 /** BasePlugin */
-class BasePlugin: FlutterPlugin, HostMessageApi {
+class BasePlugin : FlutterPlugin, HostMessageApi {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -24,11 +34,23 @@ class BasePlugin: FlutterPlugin, HostMessageApi {
     }
 
     override fun flutter2Native(message: String, type: Long): String {
-        print("flutter2Native=message=$message=type=$type")
-        flutterMessageApi.native2Flutter("111", callback = {
-            print("1111")
+        print("flutter2Native=message=start=>$message=type=$type")
+        flutterMessageApi.native2Flutter("input params=>2222", callback = {
+            print("response=>${it.getOrNull()}")
         }, typeArg = 1)
-        return message
+        when (type) {
+            1L -> {
+                val wallet = Greeting.createWalletF1("111111")
+                return wallet.toJSONObject().toString()
+            }
+            2L -> {
+                return Greeting.sayHi("flutter2Native=message=$message=type=$type")
+            }
+
+            else -> {
+                return "flutter2Native=message=$message=type=$type"
+            }
+        }
     }
 
     override fun flutter2NativeAsync(
@@ -36,7 +58,7 @@ class BasePlugin: FlutterPlugin, HostMessageApi {
         type: Long,
         callback: (Result<String>) -> Unit
     ) {
-        fun  d(e:Result<String>){
+        fun d(e: Result<String>) {
             print("d")
         }
         print("flutter2NativeAsync=message=$message=type=$type")

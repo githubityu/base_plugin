@@ -2,7 +2,8 @@ import Flutter
 import UIKit
 import XCTest
 
-@testable import base_plugin
+
+@testable import hello
 
 // This demonstrates a simple unit test of the Swift portion of this plugin's implementation.
 //
@@ -11,7 +12,7 @@ import XCTest
 class RunnerTests: XCTestCase {
 
   func testGetPlatformVersion() {
-    let plugin = BasePlugin()
+    let plugin = HelloPlugin()
 
     let call = FlutterMethodCall(methodName: "getPlatformVersion", arguments: [])
 

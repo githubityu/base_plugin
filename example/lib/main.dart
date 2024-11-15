@@ -1,9 +1,9 @@
+import 'package:base_plugin/base_plugin.dart';
 import 'package:base_plugin/messages.g.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:base_plugin/base_plugin.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp>  implements FlutterMessageApi{
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await BasePlugin.flutter2Native("33344", 0) ?? 'Unknown platform version';
+      await BasePlugin.flutter2Native("33344", 0);
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -56,8 +56,14 @@ class _MyAppState extends State<MyApp>  implements FlutterMessageApi{
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Column(
+          children: [
+            Text('Running on: $_platformVersion\n'),
+            TextButton(onPressed: () async {
+              final result =await BasePlugin.flutter2Native("33344", 0);
+              print("flutter2Native=$result");
+            }, child: const Text("获取钱包"))
+          ],
         ),
       ),
     );
